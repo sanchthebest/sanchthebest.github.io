@@ -4,63 +4,77 @@ include_once("Vista/Cabecera/Cabecera.php");
  <div class="container-fluid">
  	<button onclick="mates();">hola</button>
    <button class="btn btn-info btn-lg" data-toggle="modal" data-target="#modalcliente" onclick="mates();" ><span class="fa fa-plus"> Nuevo Cliente</span></button>
- 	
-
-   
-      <div class="row">
-       <div class="col-xs-12 col-md-7" style="width: 80%;">IZUIERDA
-         <div class="form-horizontal " style="width: 100%;">  
+ 	 
+    <hr>
+    <br>
+   <div class="row">
+    <div class="col-xs-5 col-md-5">.col-xs-6 .col-md-4</div>
+    <div class="col-xs-6 col-md-4">.col-xs-6 .col-md-4</div>
+    <div class="col-xs-6 col-md-4">.col-xs-6 .col-md-4</div>
+   </div>
+    
+     <div class="row">
+     <div class="col-md-6">
+     <div class="form-horizontal " style="width: 100%;">  
       <!-- <form role = "form" id="frmekipo" class="form-horizontal"> -->
        <input type="hidden" name="id" id="id">
        <div class="form-group">
         <label for="inputEmail3" class="col-sm-2 control-label">Cliente</label>
-        <div class="col-sm-4">
-        <input type="text" class="form-control" required="" name="cliente" id="cliente" placeholder="Cliente....." onkeyup="SelecionarCliente();">
-            </div>
-            <div class="col-sm-5">
+        <div class="col-sm-7">
+        <input type="text" class="form-control" required="" name="cliente" id="cliente" placeholder="Cliente.....">
+          </div>
+            <div class="col-sm-3">
               <button class="btn btn-warning fa-fa-plus"  data-toggle="modal" data-target="#modalinstalacion">+</button>
             </div>
           </div>
           <div class="form-group">
            <label for="inputEmail3" class="col-sm-2 control-label">Tipo Trabajo</label>
-           <div class="col-sm-5">
+           <div class="col-sm-7">
             <select class="" id="tipo" style="width: 100%; height: 30px; border-radius: 3px;">
              <option value="1">Instalacion</option>
              <option value="2">Soporte</option>
             </select>
            </div>
           </div>
-          <div class="form-group">
-           <label for="inputEmail3" class="col-sm-2 control-label">Equipos:</label>
-           <div class="col-sm-5">
-            <select class="" id="equipos" style="width: 100%; height: 30px; border-radius: 3px;">
+        <div class="form-group">
+         <label for="inputEmail3" class="col-sm-2 control-label">Equipos:</label>
+           <div class="col-sm-4">
+            <select class="" id="equipos" style="width: 100%;height: 30px;border-radius: 3px;">
             </select>
            </div>
+         <label class="col-sm-1 control-label">Cantidad</label>
+         <div class="col-sm-2">
+         <input type="number" class="form-control" min="1" name="cantidadeq" id="cantidadeq"  placeholder="0">
+         </div>
+         <div class="col-sm-3">
+          <button class="btn btn-warning fa-fa-plus" onclick="CargaEquipos($('#equipos').val(),$('#cantidadeq').val());">+</button>
           </div>
+         </div>
+
          <div class="form-group">
          <label for="serie" class="col-sm-2 control-label">Materiales</label>
-         <div class="col-sm-2" id="mate">
+         <div class="col-sm-4" id="mate">
          <select class="" id="materiales" name="materiales" style="width: 100%;height: 30px;border-radius: 3px;">
            
          </select>
          </div>
          <label class="col-sm-1 control-label">Cantidad</label>
-         <div class="col-sm-1">
+         <div class="col-sm-2">
          <input type="number" class="form-control" name="cantidad" id="cantidad"  placeholder="0">
          </div>
-         <div class="col-sm-5">
+         <div class="col-sm-3">
           <button class="btn btn-warning fa-fa-plus" onclick="CargaMateriales($('#materiales').val(),$('#cantidad').val());">+</button>
           </div>
          </div>
          <div class="form-group">
          <label for="tarjeta" class="col-sm-2 control-label">Fecha</label>
-         <div class="col-sm-5">
+         <div class="col-sm-7">
          <input type="date" class="form-control" name="fecha" id="fecha" placeholder="Tarjeta....">
          </div>
          </div>
          <div class="form-group">
          <label for="modelo" class="col-sm-2 control-label">OT</label>
-         <div class="col-sm-5">
+         <div class="col-sm-7">
          <input type="text" class="form-control"  name="ot" id="ot" placeholder="Modelo...."> 
          </div>
          </div>
@@ -73,17 +87,11 @@ include_once("Vista/Cabecera/Cabecera.php");
           <!-- <button class="btn btn-success btn-lg" onclick="Agregarx();">REGISTRAR</button> -->
           </div>
         </div>
-       </div>
-       <div class="col-xs-3 col-md-7">
-            <p class="active">lista de Materiales</p>
-            <div id="lista" >
-            </div>
-       </div>
+     
      </div>
-
-
-
-
+     <div class="col-md-3">.col-md-4</div>
+     <div class="col-md-3">.col-md-4</div>
+    </div>
 
  </div>
 

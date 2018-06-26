@@ -107,10 +107,13 @@ class PrincipalCtrl
             break;
 
            
-          case 'ListaEquipos';
+          case 'ListaEquipos':
             $lista = Equipo::Listar2();
             break;
-
+          case 'ListaEquiCantidad':
+            $lista = Equipo::ListarEquiposy();
+            echo json_encode($lista);
+            break;
           case 'Listare':
             $lista = Equipo::ListarEquiposx();
              echo json_encode($lista);
@@ -172,7 +175,7 @@ class CuentaCtrl
             break;
           case 'ListaEquipos':
            $lista = Equipo::Listar2();
-           // echo json_encode($lista);
+           echo json_encode($lista);
             break;
           // case 'ListaEquipos':
           //  $lista = Equipo::Listar2();
@@ -354,6 +357,7 @@ class CuentaCtrl
           $Instalacion->Cliente = $_POST["cliente"];
           $Instalacion->Tipo = $_POST["tipo"];
           $Instalacion->Equipo = $_POST["equipos"];
+          $Instalacion->CantiEquipo = $_POST["cantidadeq"];
           $Instalacion->Materiales = $_POST["materiales"];
           $Instalacion->Cantidad = $_POST["cantidad"];
           $Instalacion->Fecha = $_POST["fecha"];
@@ -363,9 +367,6 @@ class CuentaCtrl
           echo $msj;
           break;
       	}
-
-
-   
    }
 }
 ?>

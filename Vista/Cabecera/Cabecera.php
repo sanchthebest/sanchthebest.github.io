@@ -1,12 +1,16 @@
 <?php
 include('Vista/Info.php');
 $raiz = $url;
-if (isset($_SESSION['usuario'])) {
-   $usu = new Usuario();
-   $usu = unserialize($_SESSION['usuario']);
-}
+ if (isset($_SESSION['usuario']))
+    {
+     $usu = new Usuario();
+     $usu = unserialize($_SESSION['usuario']);
+    }
+    else
+    {
+      header('Location:'.$GLOBALS['raiz'].'');
+    }
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,37 +32,43 @@ if (isset($_SESSION['usuario'])) {
   <STYLE TYPE="text/CSS">
   </STYLE>
 </head>
-<body>
+<body onload="">
 <div class="page-container">
 	  <div class="page-sidebar">
                 <!-- START X-NAVIGATION -->
                 <ul class="x-navigation">
                     <li class="xn-logo">
-                        <a href="index.html", style="color: blue">RED GO</a>
+                        <a href="index.html", style="color: #058345">RED GO</a>
                         <a href="#" class="x-navigation-control"></a>
                     </li>
                     <li class="xn-profile">
                         <a href="#" class="profile-mini">
-                            <img src="assets/images/users/avatar.jpg" alt="John Doe"/>
+                            <img src="<?php echo "$raiz";?>Css/icons/a.png" alt="John Doe"/>
                         </a>
                         <div class="profile">
                             <div class="profile-image">
-                                <img src="assets/images/users/avatar.jpg" alt="John Doe"/>
+                                <img src="<?php echo "$raiz";?>Css/icons/a.png" alt="John Doe"/>
                             </div>
                     <!-- ojo esta es la parte de sssion de mi pagina -->
                             <div class="profile-data">
-                            <?php 
-                                if (isset($_SESSION['usuario']))
+                          <?php 
+                                if (isset($_SESSION["usuario"]))
                                 {
                                 $usu = new Usuario();
                                 $usu = unserialize($_SESSION['usuario']);
-                             ?>
-                           <div class="profile-data-name">Bienvenido : <?php echo $usu->usuario;?></div>
-                           <div class="profile-data-title">Web Developer/Designer</div>
+
+                            ?> 
+                           <div class="profile-data-name">Bienvenido :<?php echo $usu->NomUsu?> </div>
+                           <div class="profile-data-title"></div>
                            </div>
-                           <?php 
+                          <?php 
                             }
-                            ?>
+                             else{
+                               header("location ../");
+                            }
+                           ?> 
+ 
+
                             <div class="profile-controls">
                                 <a href="pages-profile.html" class="profile-control-left"><span class="fa fa-info"></span></a>
                                 <a href="pages-messages.html" class="profile-control-right"><span class="fa fa-envelope"></span></a>
@@ -82,35 +92,28 @@ if (isset($_SESSION['usuario'])) {
                     <li class="xn-openable">
                         <a href="#"><span class="fa fa-desktop"></span> <span class="xn-text">Equipos</span></a>
                         <ul>
-                            <li><a href="<?php echo "$raiz";?>Inicio/Equipo"><span class="fa fa-laptop"></span>Nuevo Equipo</a></li>
+                            <li><a href="<?php echo "$raiz";?>Inicio/Equipo"><span class="fa fa-briefcase"></span>Nuevo Equipo</a></li>
                             <li><a href="<?php echo "$raiz";?>Inicio/Material"><span class="fa fa-fw fa-wrench"></span> Nuevo Material</a></li>
                             
                         </ul>
                     </li>
                     <li class="xn-title">Trabajos</li>
                     <li class="">
-                        <a href="<?php echo "$raiz";?>Inicio/Instalacion"><span class="fa fa-cogs"></span> <span class="xn-text">Instalacion</span></a>                        
+                        <a href="<?php echo "$raiz";?>Inicio/Instalacion"><span class="fa fa-cogs"></span> <span class="xn-text">Instalacion / Soportes</span></a>                        
                     </li>                    
                                        
                     <li>
-                        <a href="<?php echo "$raiz";?>Inicio/Soporte"><span class="fa fa-map-marker"></span> <span class="xn-text">Soporte</span></a>
+                        <a href="<?php echo "$raiz";?>Inicio/Retiros"><span class="fa fa-map-marker"></span> <span class="xn-text">Retiros</span></a>
                     </li> 
-                    <li class="xn-title">Trabajos</li>   
+                    <li class="xn-title">Almacenes</li>   
                      <li class="">
-                        <a href="#"><span class="fa fa-cogs"></span> <span class="xn-text">Realizados</span></a>                        
+                        <a href="#"><span class="fa fa-umbrella"></span> <span class="xn-text">Almacen Ingreso</span></a>                        
                     </li>                    
                                        
                     <li>
                         <a href="maps.html"><span class="fa fa-map-marker"></span> <span class="xn-text">Almacen Disponible</span></a>
                     </li> 
-                       <li class="xn-openable">
-                        <a href="#"><span class="fa fa-desktop"></span> <span class="xn-text">Equipos</span></a>
-                        <ul>
-                            <li><a href="<?php echo "$raiz";?>Inicio/Equipo"><span class="fa fa-laptop"></span>Nuevo Equipo</a></li>
-                            <li><a href="<?php echo "$raiz";?>Inicio/Material"><span class="fa fa-fw fa-wrench"></span> Nuevo Material</a></li>
-                            
-                        </ul>
-                    </li>              
+                                 
                 </ul>
                 <!-- END X-NAVIGATION -->
             </div>
@@ -128,36 +131,25 @@ if (isset($_SESSION['usuario'])) {
             <li class="xn-icon-button pull-right">
               <a data-placement="bottom" data-original-title="Salir" data-toggle="tooltip" class="mb-control" data-box="#mb-signout"><span class="fa fa-sign-out"></span></a>                        
             </li> 
-
+   
           </ul>
+
           <!-- MESSAGE BOX-->
           <div class="message-box animated fadeIn" data-sound="alert" id="mb-signout">
             <div class="mb-container">
               <div class="mb-middle">
                 <div class="mb-title"><span class="fa fa-sign-out"></span> Cerrar <strong>Sesion</strong>?</div>
                 <div class="mb-content">
-                  <p>Estas seguro <?php echo $usu->usuario;?> de salir del sistema?</p>                    
+                  <p>Estas seguro <?php echo $usu->NomUsu;?> de salir del sistema?</p>                    
                   <p>Presione si para salir</p>
 
                 </div>
                 <div class="mb-footer">
                   <div class="pull-right">
                    <a class="btn btn-success btn-lg" href="<?php echo $raiz; ?>Inicio/Salir">Si</a>
-                   <button class="btn btn-default btn-lg mb-control-close">No</button>
+                   <button class="btn btn-default mb-control-close">No</button>
                  </div>  
                </div>
              </div>
            </div>
          </div>
-        
-        <?php 
-        
-        // else
-        // {
-        //   // echo "string";
-        // }
-        ?>  
-      
-
-         <!-- END MESSAGE BOX-->
-<!-- </div> ojos este div es el final que va a pie -->

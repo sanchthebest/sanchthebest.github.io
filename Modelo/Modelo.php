@@ -76,7 +76,7 @@ class Usuario
 	public function ActualizarUsuario()
 	{
 		$cone = new Conexion();
-		$sql = "update Usuario u set Codigo = '".$this->Codigo."', NomUsu = '".$this->NomUsu."', Estado = '".$this->Estado."' ,'".$this->Pass."' where u.Id = ".$this->Id;
+		$sql = "update Usuario u set Codigo = '".$this->Codigo."', NomUsu = '".$this->NomUsu."', Estado = '".$this->Estado."' , Pass = '".$this->Pass."' where u.Id = ".$this->Id;
 		$cone->EjecutarSql($sql);
 	}
    
@@ -156,14 +156,14 @@ class Materiales
   public function EliminaMaterial()
   {
     $cone = new Conexion();
-    $sql = "delete from Materiales where Id = ".$this->Id;
+    $sql = "update materiales set Baja = '0' where Id =  ".$this->Id;
     $cone->EjecutarSql($sql);
   }
 
   public static function ListarMateriales()
   {
     $cone = new Conexion();
-    $sql = "select * from Materiales";
+    $sql = "select * from Materiales  where Baja = '1'";
     $tabla = $cone->Seleccionar($sql);
     $lista = array();
     $i=0;
@@ -195,6 +195,8 @@ class Equipo
 	public $Tarjeta;
 	public $Modelo;
   public $Baja;
+
+  public $contador;
 
     public function InsertarEquipo()
     {
@@ -230,7 +232,28 @@ class Equipo
       }
       return $lista;
     }
-    
+    public static function ListarEquiposy()
+    {
+      $cone = new Conexion();
+      $sql = "select Codigo, COUNT(Codigo) as 'Cantidad' from equipo group BY codigo";
+      $tabla = $cone->Seleccionar($sql);
+      $lista = array();
+      $i = 0;
+      while ($fila = mysql_fetch_array($tabla)) {
+         $lista[$i] = Equipo::CrearEquipoCodigo($fila);
+         $i++;
+      }
+      return $lista;
+    }
+    public static function CrearEquipoCodigo($fila)
+    {
+      $Equipo = new Equipo();
+      /*$Equipo->Id = $fila['Id'];*/
+      $Equipo->Codigo = $fila['Codigo'];
+      $Equipo->Modelo = $fila['Cantidad'];
+      
+      return $Equipo;
+    }
     public static function CrearEquipo($fila)
     {
       $Equipo = new Equipo();
@@ -240,6 +263,7 @@ class Equipo
       $Equipo->Serie = $fila['Serie'];
       $Equipo->Tarjeta =$fila['Tarjeta'];
       $Equipo->Modelo = $fila['Modelo'];
+      $Equipo->Baja = $fila['Baja'];
       return $Equipo;
     }
 
@@ -250,6 +274,7 @@ class Instalacion
   public $Cliente;
   public $Tipo;
   public $Equipo;
+  public $CantiEquipo;
   public $Materiales;
   public $Cantidad;
   public $Fecha;
@@ -260,7 +285,7 @@ class Instalacion
   public function InsertarDetalle()
   {
     $cone = new Conexion();
-    $sql = "insert into DetalleTrabajo values ('".$this->Nro."','".$cone->SacaCliente($this->Cliente)."','".$this->Tipo."' ,'".$cone->SacaEquipo($this->Equipo)."','".$cone->Nroid($this->Materiales)."','".$this->Cantidad."','".$this->Fecha."','".$this->Ot."')";
+    $sql = "insert into DetalleTrabajo values ('".$this->Nro."','".$cone->SacaCliente($this->Cliente)."','".$this->Tipo."' ,'".$cone->SacaEquipo($this->Equipo)."','".$this->CantiEquipo."','".$cone->Nroid($this->Materiales)."','".$this->Cantidad."','".$this->Fecha."','".$this->Ot."')";
     $cone->EjecutarSql($sql);
   }
   
@@ -281,7 +306,9 @@ class Instalacion
   public static function ListarSoportes()
    {
     $cone = new Conexion();
-    $sql = "select * from DetalleTrabajo where Trabajo = '2'";
+    // $sql = "select * from DetalleTrabajo where Trabajo = '2'";
+        $sql = "Select d.Id, c.Nombre, t.Tipo, d.Equipo, d.CantiEquipo, m.Nombre, d.Cantidad_Materiales, d.Fecha,d.ot from detalletrabajo d , cliente c,trabajo t,equipo e,materiales m
+WHERE c.Id  = d.Cliente and t.Id = d.Trabajo and e.Id = d.Equipo and m.Id = d.Materiales";
     $tabla = $cone->Seleccionar($sql);
     $lista = array();
     $i = 0;
@@ -296,10 +323,12 @@ class Instalacion
   {
     $Instalacion = new Instalacion();
     $Instalacion->Id = $fila["Id"];
+    // $Instalacion->Cliente = $fila["Cliente"];
     $Instalacion->Cliente = $fila["Cliente"];
-    $Instalacion->Trabajo = $fila["Trabajo"];
+    $Instalacion->Trabajo = $fila["Tipo"];
     $Instalacion->Equipo = $fila["Equipo"];
-    $Instalacion->Materiales = $fila["Materiales"];
+    $Instalacion->CantiEquipo = $fila["CantiEquipo"];
+    $Instalacion->Materiales = $fila["Nombre"];
     $Instalacion->Cantidad_Materiales = $fila["Cantidad_Materiales"];
     $Instalacion->Fecha = $fila["Fecha"];
     $Instalacion->Ot = $fila["Ot"];

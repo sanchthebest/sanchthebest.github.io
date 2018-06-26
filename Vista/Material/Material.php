@@ -90,9 +90,13 @@ function ListadeMateriales()
     var lista = JSON.parse(msj);
     var tabla = "<table id='tablamaterial' class='table  table-responsive'><thead><tr><th>Nro</th><th>Codigo</th><th>Nombre</th><th>Stock</th><th>Acciones</th></tr></thead><tbody>";
     var nro = 0;
-    for (var i = 0; i < lista.length; i++) {
-     nro++;
+    for (var i = 0; i < lista.length; i++)
+    {
+      if (lista[i].Codigo != 0) 
+      {
+        nro++;
        tabla+= "<tr><td>"+lista[i].Id+"</td><td>"+lista[i].Codigo+"</td><td>"+lista[i].Nombre+"</td><td>"+lista[i].Stock+"</td><td><button class = 'btn btn-success' data-toggle = 'modal' data-target = '#modalmaterial' onclick ='EditaMaterial("+lista[i].Id+"\,\""+lista[i].Codigo+"\",\""+lista[i].Nombre+"\",\""+lista[i].Stock+"\")' ><span class='glyphicon glyphicon-pencil'></span></button>&nbsp<button class = 'btn btn-danger'><span class='fa fa-trash-o' onclick ='EliminaE("+lista[i].Id+")'></span></button></td></tr>";
+      }
     }
     tabla+="<div class='col-md-15'><div class='widget widget-primary widget-no-subtitle'><div class='widget-big-int'><span class='num-count'>"+nro+"</span></div>                            <div class='widget-subtitle'>Materiales Disponibles</div><div class='widget-controls'><a href='#' class='widget-control-left'><span class='fa fa-cloud'></span></a></div></div></div></tbody></table>";
 

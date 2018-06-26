@@ -30,7 +30,7 @@ create table Materiales
 create table Equipo
 (
   Id int auto_increment,
-  Codigo int not null,
+  Codigo varchar (25) not null,
   Chip int not null,
   Serie int not null,
   Tarjeta int not null,
@@ -54,6 +54,7 @@ create table DetalleTrabajo
 	Cliente int not null,
 	Trabajo int not null,
 	Equipo int not null,
+	CantiEquipo int not null,
 	Materiales int not null,
 	Cantidad_Materiales int not null,
 	Fecha date not null,
@@ -80,7 +81,11 @@ create table AlmacenRetiro
     constraint pk_almacenretiro primary key (Id)
 );
 
+ojo hacer el delete cascade
+ojo para reducir 
 
+SELECT DISTINCT(Ot),cliente,trabajo,materiales,SUM(Cantidad_Materiales),equipo,SUM(CantiEquipo) from detalletrabajo where trabajo = 1
+GROUP by Ot
 
 
 ojo escripts para sacar detalles de la base de datos
@@ -91,3 +96,60 @@ SELECT  DISTINCT(cliente),trabajo,equipo,SUM(materiales),SUM(Cantidad_Materiales
 from detalletrabajo where trabajo = 1
 GROUP by cliente
 
+triggers para realizar las reducciones de mi almacen que asco
+CREATE TRIGGER ReduceStock AFTER INSERT on detalletrabajo
+FOR EACH ROW
+UPDATE materiales set Stock = new.Cantidad_Materiales WHERE Id  = new.materiales
+;
+
+
+create trigger reducir AFTER insert ON venta
+for each row
+update producto set cantidad  = cantidad - new.Catidad_Produ where id = new.id
+;
+
+CREATE TRIGGER ReduceStock AFTER INSERT on detalletrabajo
+FOR EACH ROW
+UPDATE materiales set Stock = Stock - new.Cantidad_Materiales   WHERE Id  = new.materiales
+;
+
+
+CREATE TABLE cliente
+(
+    id int AUTO_INCREMENT,
+    nombre varchar (25) not null,
+    pedido int not null,
+    CONSTRAINT pk_cliente primary key(id)
+);
+
+CREATE table Producto
+(
+    Id int AUTO_INCREMENT,
+    Nombre varchar (20) not null,
+    Cantidad int not null,
+    CONSTRAINT pk_producto PRIMARY key (Id)
+);
+CREATE table venta
+(
+    Id int AUTO_INCREMENT,
+    Id_arcticulo int, 
+    cantidad int,
+    cliente int,
+    precio decimal,
+    Producto int not null,
+    Catidad_Produ int not null,
+    CONSTRAINT pk_venta PRIMARY key (id),
+    CONSTRAINT fk_venta_cliente FOREIGN key (cliente) REFERENCES cliente(id),
+    constraint fk_venta_produto FOREIGN key (Producto) references Producto(Id)
+);
+insert into producto values (1,'Aceite',30)
+insert into producto values (2,'Sodas',50)
+insert into producto values (3,'Sal',35)
+
+INSERT into cliente values (1,'DANIEL','');
+INSERT into cliente values (2,'ROMINA','');
+INSERT into cliente values (3,'JUDAS','');
+
+INSERT into venta VALUES (1,2,4,19,1,3);
+INSERT into venta VALUES (2,2,3,50,2,4);
+INSERT into venta VALUES (3,4,5,40,3,40);

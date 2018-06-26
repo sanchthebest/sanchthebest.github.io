@@ -92,22 +92,43 @@ include_once("Vista/Pie/Pie.php");
 
   //   });}
   ListadeEquipos();
+  // listanombrecantidad();
   // Listary();
   // listarAulasx();
- function Saludar()
+ function listanombrecantidad()
  {
-  alert("entra");
- }
-
+  var url = "<?php echo "$raiz";?>Inicio/ListaEquiCantidad";
+  $.get(url,null,function(res)
+  {
+    alert(res);
+    var tabla="<table id='tablaequipos' class='table table-bordered '><thead><tr><th>Nro</th><th>Codigo</th><th>Cantidad</th></tr></thead><tbody>";
+    var lista = JSON.parse(res);
+    var iaux = 1;
+    for (var i = 0; i < lista.length; i++)
+    {
+      if (lista[i].Codigo != 0) 
+      {
+        tabla+="<tr><td>"+ iaux++ +"</td><td>"+lista[i].Codigo+"</td><td>"+ lista[i].Modelo+"</td></tr>";
+      }
+    }
+      $("#listaequipos").html(tabla);
+      $("#tablaequipos").DataTable();
+ });
+}
   function ListadeEquipos()
   {
     var url = "<?php echo "$raiz";?>Inicio/Listare";
     $.get(url,null,function(res){
-  var tabla="<table id='tablaequipos' class='table table-bordered '><thead><tr><th>Id</th><th>Codigo</th><th>Chip</th><th>Serie</th><th>Tarjeta</th><th>Modelo</th><th>Acciones</th></tr></thead><tbody>";
+      alert("Entra lista de equipos");
+      alert(res);
+    var tabla="<table id='tablaequipos' class='table table-bordered '><thead><tr><th>Id</th><th>Codigo</th><th>Chip</th><th>Serie</th><th>Tarjeta</th><th>Modelo</th><th>Acciones</th></tr></thead><tbody>";
     var lista = JSON.parse(res);
-    for (var i = 0; i < lista.length; i++) {
-       
-      tabla+="<tr><td>"+lista[i].Id+"</td><td>"+lista[i].Codigo+"</td><td>"+lista[i].Chip+"</td><td>"+lista[i].Serie+"</td><td>"+lista[i].Tarjeta+"</td><td>"+lista[i].Modelo+"</td><td><button class = 'btn btn-success' data-toggle = 'modal' data-target = '#modalequipo' onclick ='ActuaEquipo("+lista[i].Id+"\,\""+lista[i].Codigo+"\",\""+lista[i].Chip+"\",\""+lista[i].Serie+"\",\""+lista[i].Tarjeta+"\",\""+lista[i].Modelo+"\")' ><span class='glyphicon glyphicon-pencil'></span>Editar</button>&nbsp<button class = 'btn btn-danger'><span class='glyphicon glyphicon-remove' onclick ='Elimina1("+lista[i].Id+")'></span>Eliminar</button></td></tr>";
+    for (var i = 0; i < lista.length; i++)
+    {
+      if (lista[i].Codigo != 0 && lista[i].Baja != 0) 
+      {
+        tabla+="<tr><td>"+lista[i].Id+"</td><td>"+lista[i].Codigo+"</td><td>"+lista[i].Chip+"</td><td>"+lista[i].Serie+"</td><td>"+lista[i].Tarjeta+"</td><td>"+lista[i].Modelo+"</td><td><button class = 'btn btn-success' data-toggle = 'modal' data-target = '#modalequipo' onclick ='ActuaEquipo("+lista[i].Id+"\,\""+lista[i].Codigo+"\",\""+lista[i].Chip+"\",\""+lista[i].Serie+"\",\""+lista[i].Tarjeta+"\",\""+lista[i].Modelo+"\")' ><span class='glyphicon glyphicon-pencil'></span>Editar</button>&nbsp<button class = 'btn btn-danger'><span class='glyphicon glyphicon-remove' onclick ='Elimina1("+lista[i].Id+")'></span>Eliminar</button></td></tr>";
+      }
     }
 
       $("#listaequipos").html(tabla);

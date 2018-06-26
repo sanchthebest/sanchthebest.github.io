@@ -54,11 +54,24 @@ class Conexion
       die("No se pudo conectar con el servidor Verifique");
     }
     mysql_select_db($this->basedatos,$con);
-    $sql = "Select Id from Materiales where Nombre = '".$mate."' ";
+
+    /**/
+
+    if ($mate == "")
+    {
+      $sql = "Select Id from Materiales where Codigo = 0";
+    }
+    else
+    {
+      $sql = "Select Id from Materiales where Nombre = '".$mate."' ";
+    }
+
+    /**/
+
+    /*$sql = "Select Id from Materiales where Nombre = '".$mate."' ";*/
     $id = mysql_result(mysql_query($sql), 0,0);
     if ($id == false) {
-    echo "<h2>$sql</h2>";
-    die("ffsf");
+    die("<h2>$sql</h2>");
     }
     mysql_close($con);
     return $id;
@@ -74,7 +87,7 @@ class Conexion
     $sql = "Select Id from Cliente where Nombre = '".$clie."' ";
     $id = mysql_result(mysql_query($sql), 0,0);
     if ($id == false) {
-    die("XXXX");
+    die("<h2>$sql</h2>");
     }
     mysql_close($con);
     return $id;
@@ -87,10 +100,22 @@ class Conexion
       die("No se pudo conectar con el servidor Verifique");
     }
     mysql_select_db($this->basedatos,$con);
-    $sql = "Select Id from Equipo where Codigo = '".$equi."' ";
+    /*$sql = "Select Id from Equipo where Codigo = '".$equi."' ";*/
+
+    /**/
+    if ($equi == "")
+    {
+      $sql = "Select Id from Equipo where Codigo = 0";
+    }
+    else
+    {
+      $sql = "Select Id from Equipo where Codigo = '".$equi."' ";
+    }
+    /**/
+
     $id = mysql_result(mysql_query($sql), 0,0);
     if ($id == false) {
-    die("XXXX");
+    die("<h2>$sql</h2>");
     }
     mysql_close($con);
     return $id;
